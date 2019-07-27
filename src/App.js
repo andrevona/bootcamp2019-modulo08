@@ -1,13 +1,31 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 function App() {
-  const [techs, setTechs] = useState(['NodeJS', 'React Native']);
+  const [techs, setTechs] = useState([]);
   const [newTech, setNewTech] = useState('');
 
   function handleAdd() {
     setTechs([...techs, newTech]);
     setNewTech('');
   }
+
+  // componentDidMount
+  // 1o argumento: função que vai ser executada
+  // 2o argumento: quando vai executar (array com variáveis a serem monitorados)
+  // Executa uma única vez pois não monitora nenhuma variável específica (array vazio)
+  useEffect(() => {
+    const storedTechs = localStorage.getItem('tech');
+
+    if (storedTechs) {
+      setTechs(JSON.parse(storedTechs));
+    }
+  }, []);
+
+  // componentDidUpdate
+  // Executa sempre que o valor techs no array for alterado
+  useEffect(() => {
+    localStorage.setItem('tech', JSON.stringify(techs));
+  }, [techs]);
 
   return (
     <>
